@@ -5,7 +5,8 @@ namespace UniversityCourses
     internal class Program
     {
         //CourseID || Student Names 
-        static Dictionary<string, HashSet<string>> Courses = new Dictionary<string, HashSet<string>>();
+        static Dictionary<string, HashSet<string>> Courses = new Dictionary<string, HashSet<string>>(); 
+        static Dictionary<string,string> WaitList = new Dictionary<string, string>(); //Capacity of each course is 2
         static HashSet<string> StudentNames = new HashSet<string>();
 
         static void Main(string[] args)
@@ -202,20 +203,31 @@ namespace UniversityCourses
                 Console.WriteLine("CourseID = {0}", p.Key, " ");
             }
 
-
+           
             Console.Write("\nEnter ID: ");
             string RemoveID = Console.ReadLine();
 
+            int parts = 0;
             if (Courses.ContainsKey(RemoveID)) //Checking if course  exists 
             {
-                //check that no one is registered to this course 
-                Courses.Remove(RemoveID); //Deleting the course
-
-                Console.WriteLine("\nThe new course list: ");
-                foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+                foreach (string students in Courses[RemoveID]) //counting how many names in course
                 {
-                    Console.WriteLine("CourseID = {0}", p.Key, " ");
+                    parts++;
                 }
+
+                if (parts == 0)//check that no one is registered to this course 
+                {
+                    Courses.Remove(RemoveID); //Deleting the course
+
+                    Console.WriteLine("\nThe new course list: ");
+                    foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+                    {
+                        Console.WriteLine("CourseID = {0}", p.Key, " ");
+                    }
+                    Console.WriteLine("\n");
+                }
+
+                else { Console.WriteLine("<!>This course has students enrolled in it cannot delete<!>"); }
             }
 
             else
@@ -267,6 +279,8 @@ namespace UniversityCourses
             }
 
             else { Console.WriteLine("<!>Improper input<!>"); }
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadKey();
         }
 
 
@@ -476,7 +490,7 @@ namespace UniversityCourses
         }
 
 
-        static public void WaitList()
+        static public void Waiting()
         {
             Console.Clear();
             Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
