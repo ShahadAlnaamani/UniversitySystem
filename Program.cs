@@ -79,7 +79,7 @@ namespace UniversityCourses
                 Console.WriteLine("1.  View Course Information");
                 Console.WriteLine("2.  Add course");
                 Console.WriteLine("3.  Remove course");
-                Console.WriteLine("4.  Manage students"); //view student profile(courses), remove student profile, remove course for specific student, add student to course
+                Console.WriteLine("4.  Adding students"); //view student profile(courses), remove student profile, remove course for specific student, add student to course
                 Console.WriteLine("5.  Search for student by course");
                 Console.Write("\nEnter: ");
 
@@ -179,7 +179,7 @@ namespace UniversityCourses
             }
 
 
-            Console.Write("Enter ID: ");
+            Console.Write("\nEnter ID: ");
             string RemoveID = Console.ReadLine();
 
             if (Courses.ContainsKey(RemoveID)) //Checking if course  exists 
@@ -210,10 +210,24 @@ namespace UniversityCourses
 
         static public void ManageStudent()
         {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("ADDING COURSE: ");
+
+            Console.WriteLine("\nCourse list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID = {0}", p.Key, " ");
+            }
+
             //adding student 
-            Console.Write("Enter student name: ");
+            Console.Write("\nEnter student name: ");
             string StudentName = Console.ReadLine();
-            Courses["123A"].Add(StudentName);
+
+            Console.Write("\nEnter course ID: ");
+            string CourseID = Console.ReadLine();
+
+            Courses[CourseID].Add(StudentName);
 
             foreach (KeyValuePair<string, HashSet<string>> p in Courses)
             {
@@ -227,7 +241,34 @@ namespace UniversityCourses
         }
 
         static public void SearchByCourse()
-        { }
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("SHOW STUDENTS IN COURSE: ");
+
+            Console.WriteLine("\nCourse list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID = {0}", p.Key, " ");
+            }
+
+            Console.Write("\nEnter ID: ");
+            string CourseID = Console.ReadLine();
+
+
+            if (Courses.ContainsKey(CourseID)) //Checking if course  exists 
+            {
+                Console.WriteLine("\nStudents in course: ");
+                foreach (string students in Courses[CourseID])
+                {
+                    Console.WriteLine("CourseID = {0}", students);
+                }
+            }
+
+            Console.WriteLine("\nPress enter to continue...");
+            Console.ReadKey();
+
+        }
 
 
 
