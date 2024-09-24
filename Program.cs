@@ -5,8 +5,8 @@ namespace UniversityCourses
     internal class Program
     {
         //CourseID || Student Names 
-        Dictionary <string, HashSet <string>> Courses = new Dictionary <string, HashSet<string>> ();
-        //HashSet<string> StudentNames = new HashSet<string> ();
+        static Dictionary <string, HashSet <string>> Courses = new Dictionary <string, HashSet<string>> ();
+        static HashSet<string> StudentNames = new HashSet<string> ();
 
         static void Main(string[] args)
         {
@@ -121,19 +121,82 @@ namespace UniversityCourses
             }while (AdminPage != false);
         }
 
+        /*
         static public void AdminLogin()
         {
             Console.Clear();
             Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
             Console.WriteLine("Hi from Admin Login");
         }
+        */
+
+        static public void ViewCourses() 
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("VIEWING COURSES: ");
+
+            Console.WriteLine("Course list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.Write("CourseID = {0}", p.Key, " ");
+            }
+
+        }
+
+
+        static public void AddCourse()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("ADDING COURSE: ");
+            Console.Write("Enter ID: ");
+            string CourseID = Console.ReadLine();
+
+            Courses.Add(CourseID, new HashSet<string>(){ });
+
+            Console.WriteLine("The new course list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.Write("CourseID = {0}", p.Key, " ");
+
+            }
+
+        }
+
+
+        static public void RemoveCourse()
+        { }
+
+
+        static public void ManageCourse()
+        { }
+
+
+        static public void ManageStudent()
+        {
+            //adding student 
+            Console.Write("Enter student name: ");
+            string StudentName = Console.ReadLine();
+            Courses["123A"].Add(StudentName);
+
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.Write("CourseID = {0}", p.Key, " ");
+
+                foreach (string student in p.Value)
+                {
+                    Console.Write("Name = {0}", student);
+                }
+            }
+        }
+
+        static public void SearchByCourse()
+        { }
 
 
 
-
-
-
-//****************************STUDENT***********************************************************//
+        //****************************STUDENT***********************************************************//
 
         static public void Student()
         {
