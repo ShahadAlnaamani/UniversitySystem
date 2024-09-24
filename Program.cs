@@ -72,7 +72,7 @@ namespace UniversityCourses
             {
                 Console.Clear();
                 Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
-                AdminLogin();
+                //AdminLogin();
 
                 
                 Console.WriteLine("\n\nChoose one of the following options:");
@@ -155,18 +155,53 @@ namespace UniversityCourses
 
             Courses.Add(CourseID, new HashSet<string>(){ });
 
-            Console.WriteLine("The new course list: ");
+            Console.WriteLine("\nThe new course list: ");
             foreach (KeyValuePair<string, HashSet<string>> p in Courses)
             {
-                Console.Write("CourseID = {0}", p.Key, " ");
-
+                Console.WriteLine("CourseID = {0}", p.Key, " ");
             }
+            Console.WriteLine("\nPress enter to continue...");
+            Console.ReadKey();  
 
         }
 
 
         static public void RemoveCourse()
-        { }
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("REMOVING COURSE: ");
+
+            Console.WriteLine("\nCourse list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID = {0}", p.Key, " ");
+            }
+
+
+            Console.Write("Enter ID: ");
+            string RemoveID = Console.ReadLine();
+
+            if (Courses.ContainsKey(RemoveID)) //Checking if course  exists 
+            {
+                //check that no one is registered to this course 
+                Courses.Remove(RemoveID); //Deleting the course
+
+                Console.WriteLine("\nThe new course list: ");
+                foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+                {
+                    Console.WriteLine("CourseID = {0}", p.Key, " ");
+                }
+            }
+
+            else 
+            {
+                Console.WriteLine("\n<!>This course is not in the system<!>");
+            }
+            
+            Console.WriteLine("\nPress enter to continue...");
+            Console.ReadKey();
+        }
 
 
         static public void ManageCourse()
