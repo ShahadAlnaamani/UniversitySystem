@@ -5,8 +5,8 @@ namespace UniversityCourses
     internal class Program
     {
         //CourseID || Student Names 
-        static Dictionary <string, HashSet <string>> Courses = new Dictionary <string, HashSet<string>> ();
-        static HashSet<string> StudentNames = new HashSet<string> ();
+        static Dictionary<string, HashSet<string>> Courses = new Dictionary<string, HashSet<string>>();
+        static HashSet<string> StudentNames = new HashSet<string>();
 
         static void Main(string[] args)
         {
@@ -34,7 +34,7 @@ namespace UniversityCourses
                     case 1:
                         Admin();
                         break;
-                        
+
                     case 2:
                         Student();
                         break;
@@ -74,13 +74,14 @@ namespace UniversityCourses
                 Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
                 //AdminLogin();
 
-                
+
                 Console.WriteLine("\n\nChoose one of the following options:");
                 Console.WriteLine("1.  View Course Information");
-                Console.WriteLine("2.  Add course");
-                Console.WriteLine("3.  Remove course");
-                Console.WriteLine("4.  Adding students"); //view student profile(courses), remove student profile, remove course for specific student, add student to course
+                Console.WriteLine("2.  Add New Course");
+                Console.WriteLine("3.  Remove Course");
+                Console.WriteLine("4.  Enroll Student to Course"); //view student profile(courses), remove student profile, remove course for specific student, add student to course
                 Console.WriteLine("5.  Search for student by course");
+                Console.WriteLine("6.  Remove student from course");
                 Console.Write("\nEnter: ");
 
                 int Identity = 0;
@@ -91,7 +92,7 @@ namespace UniversityCourses
                 }
                 catch (Exception exception) { Console.WriteLine(exception.Message); }
 
-                switch (Identity) 
+                switch (Identity)
                 {
                     case 1:
                         ViewCourses();
@@ -113,12 +114,16 @@ namespace UniversityCourses
                         SearchByCourse();
                         break;
 
+                    case 6:
+                        RemoveStudent();
+                        break;
+
                     default:
                         Console.WriteLine("\n<!>Improper input please try again :( <!>");
                         break;
                 }
-                
-            }while (AdminPage != false);
+
+            } while (AdminPage != false);
         }
 
         /*
@@ -130,7 +135,7 @@ namespace UniversityCourses
         }
         */
 
-        static public void ViewCourses() 
+        static public void ViewCourses()
         {
             Console.Clear();
             Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
@@ -153,7 +158,7 @@ namespace UniversityCourses
             Console.Write("Enter ID: ");
             string CourseID = Console.ReadLine();
 
-            Courses.Add(CourseID, new HashSet<string>(){ });
+            Courses.Add(CourseID, new HashSet<string>() { });
 
             Console.WriteLine("\nThe new course list: ");
             foreach (KeyValuePair<string, HashSet<string>> p in Courses)
@@ -161,7 +166,7 @@ namespace UniversityCourses
                 Console.WriteLine("CourseID = {0}", p.Key, " ");
             }
             Console.WriteLine("\nPress enter to continue...");
-            Console.ReadKey();  
+            Console.ReadKey();
 
         }
 
@@ -194,11 +199,11 @@ namespace UniversityCourses
                 }
             }
 
-            else 
+            else
             {
                 Console.WriteLine("\n<!>This course is not in the system<!>");
             }
-            
+
             Console.WriteLine("\nPress enter to continue...");
             Console.ReadKey();
         }
@@ -240,6 +245,7 @@ namespace UniversityCourses
             }
         }
 
+
         static public void SearchByCourse()
         {
             Console.Clear();
@@ -261,8 +267,18 @@ namespace UniversityCourses
                 Console.WriteLine("\nStudents in course: ");
                 foreach (string students in Courses[CourseID])
                 {
-                    Console.WriteLine("CourseID = {0}", students);
+                    Console.WriteLine("Student Name = {0}", students);
                 }
+
+                Console.WriteLine("Would you like to remove any students? \nPress x to delete student \nPress enter to cancel.");
+                string Choice = Console.ReadLine().ToLower(); 
+
+                if (Choice.Trim() == "x")
+                {
+                    RemoveStudent();
+                }
+
+                else { Console.WriteLine("Cancelled"); }
             }
 
             Console.WriteLine("\nPress enter to continue...");
@@ -271,10 +287,55 @@ namespace UniversityCourses
         }
 
 
+        static public void RemoveStudent()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("REMOVING STUDENT FROM COURSE: ");
 
-        //****************************STUDENT***********************************************************//
+            Console.WriteLine("\nCourse list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID = {0}", p.Key, " ");
+            }
 
-        static public void Student()
+            Console.Write("\nEnter ID: ");
+            string CourseID = Console.ReadLine();
+
+            if (Courses.ContainsKey(CourseID)) //Checking if course  exists 
+            {
+                Console.WriteLine("\nStudents in course: ");
+                foreach (string students in Courses[CourseID])
+                {
+                    Console.WriteLine("Student Name = {0}", students);
+                }
+
+                Console.Write("\nEnter student name: ");
+                string StudentName = Console.ReadLine();
+
+                foreach (string students in Courses[CourseID])
+                {
+                    if (students == StudentName)
+                    {
+                        Courses[CourseID].Remove(students); //removing specific student 
+                    }
+                }
+
+                Console.WriteLine("\nNew Students List: ");
+                foreach (string students in Courses[CourseID])
+                {
+                    Console.WriteLine("Student Name = {0}", students);
+                }
+            }
+
+            Console.WriteLine("\nPress enter to continue...");
+            Console.ReadKey();
+
+        }
+
+            //****************************STUDENT***********************************************************//
+
+            static public void Student()
         {
             //Go to User --> view courses, enroll in course, remove course enrollment[check wait list], drop out [check waitlist, remove from all enrolled courses], view profile
             //Request tp drop 
