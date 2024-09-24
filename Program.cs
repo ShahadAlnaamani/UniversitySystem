@@ -82,6 +82,8 @@ namespace UniversityCourses
                 Console.WriteLine("4.  Enroll Student to Course"); //view student profile(courses), remove student profile, remove course for specific student, add student to course
                 Console.WriteLine("5.  Search for student by course");
                 Console.WriteLine("6.  Remove student from course");
+                Console.WriteLine("7.  Common Courses");
+                Console.WriteLine("8.  Withderaw Student");
                 Console.Write("\nEnter: ");
 
                 int Identity = 0;
@@ -118,6 +120,14 @@ namespace UniversityCourses
                         RemoveStudent();
                         break;
 
+                    case 7:
+                        CommonStudents();
+                        break;
+
+                    case 8:
+                        WithDrawStudent();
+                        break;
+
                     default:
                         Console.WriteLine("\n<!>Improper input please try again :( <!>");
                         break;
@@ -144,8 +154,17 @@ namespace UniversityCourses
             Console.WriteLine("Course list: ");
             foreach (KeyValuePair<string, HashSet<string>> p in Courses)
             {
-                Console.Write("CourseID = {0}", p.Key, " ");
+                Console.WriteLine("CourseID: {0}", p.Key, " ");
+
+                foreach(string students in p.Value)
+                {
+                    Console.WriteLine("Student Name: {0}", students, "\n");
+                }
+                Console.WriteLine("\n");
             }
+
+            Console.WriteLine("Press enter to continue");
+            Console.ReadKey();
 
         }
 
@@ -217,7 +236,7 @@ namespace UniversityCourses
         {
             Console.Clear();
             Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
-            Console.WriteLine("ADDING COURSE: ");
+            Console.WriteLine("ADDING STUDENT: ");
 
             Console.WriteLine("\nCourse list: ");
             foreach (KeyValuePair<string, HashSet<string>> p in Courses)
@@ -226,23 +245,28 @@ namespace UniversityCourses
             }
 
             //adding student 
-            Console.Write("\nEnter student name: ");
-            string StudentName = Console.ReadLine();
-
             Console.Write("\nEnter course ID: ");
             string CourseID = Console.ReadLine();
 
-            Courses[CourseID].Add(StudentName);
+            Console.Write("\nEnter student name: ");
+            string StudentName = Console.ReadLine();
 
-            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            if (Courses.ContainsKey(CourseID))
             {
-                Console.Write("CourseID = {0}", p.Key, " ");
+                Courses[CourseID].Add(StudentName);
 
-                foreach (string student in p.Value)
+                foreach (KeyValuePair<string, HashSet<string>> p in Courses)
                 {
-                    Console.Write("Name = {0}", student);
+                    Console.Write("CourseID = {0}", p.Key, " ");
+
+                    foreach (string student in p.Value)
+                    {
+                        Console.Write("Name = {0}", student);
+                    }
                 }
             }
+
+            else { Console.WriteLine("<!>Improper input<!>"); }
         }
 
 
@@ -255,7 +279,7 @@ namespace UniversityCourses
             Console.WriteLine("\nCourse list: ");
             foreach (KeyValuePair<string, HashSet<string>> p in Courses)
             {
-                Console.WriteLine("CourseID = {0}", p.Key, " ");
+                Console.WriteLine("CourseID = {0}", p.Key);
             }
 
             Console.Write("\nEnter ID: ");
@@ -333,9 +357,108 @@ namespace UniversityCourses
 
         }
 
+
+        static public void CommonStudents()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("FINDING COMMON STUDENTS: ");
+
+            Console.WriteLine("\nCourse list: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID = {0}", p.Key, " ");
+            }
+
+            Console.Write("\nEnter 1st course ID: ");
+            string Course1 = Console.ReadLine();    
+            Console.Write("\nEnter 2nd course ID: ");
+            string Course2 = Console.ReadLine();
+
+            if (Courses.ContainsKey(Course1))
+            {
+                if (Courses.ContainsKey(Course2))
+                {
+                    HashSet <string> CoursesOne = new HashSet<string>();
+                    HashSet<string> CoursesTwo = new HashSet<string>();
+
+                    //Creating copies so main data is not affected by changes 
+                    CoursesOne = Courses[Course1];
+                    CoursesTwo = Courses[Course2];
+                    CoursesOne.IntersectWith(CoursesTwo);
+
+                    Console.WriteLine("\nThe common students are: ");
+                    foreach (string course in CoursesOne)
+                    {
+                        Console.WriteLine(course);
+                    }
+                }
+
+                else
+                { Console.WriteLine("<!>The second course ID does not exist<!>"); }
+            }
+
+            else
+            { Console.WriteLine("<!>The first course ID does not exist<!>"); }
+
+            Console.WriteLine("Press enter to continue...");
+            Console.ReadKey();
+            
+        }
+
+        static public void WithDrawStudent()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\nC I T Y   U N I V E R S I T Y\n\n");
+            Console.WriteLine("WITHDRAWING STUDENT: ");
+
+            Console.WriteLine("\nStudent information: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID: {0}", p.Key, " ");
+
+                foreach (string students in p.Value)
+                {
+                    Console.WriteLine("Student Name: {0}", students, "\n");
+                }
+                Console.WriteLine("\n");
+            }
+
+            Console.Write("Enter name: ");
+            string Name = Console.ReadLine();
+
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                HashSet<string> Student = new HashSet<string>();
+                foreach (string students in p.Value)
+                {
+                    if (students == Name)
+                    {
+                        Student.Add(students);
+                        p.Value.ExceptWith(Student);
+                    }
+                }
+            }
+
+            Console.WriteLine("\nUpdated Student Information: ");
+            foreach (KeyValuePair<string, HashSet<string>> p in Courses)
+            {
+                Console.WriteLine("CourseID: {0}", p.Key, " ");
+
+                foreach (string students in p.Value)
+                {
+                    Console.WriteLine("Student Name: {0}", students, "\n");
+                }
+                Console.WriteLine("\n");
+            }
+
+            Console.WriteLine("\nPress enter to continue...");
+            Console.ReadKey();
+        }
+
             //****************************STUDENT***********************************************************//
 
-            static public void Student()
+        static public void Student()
         {
             //Go to User --> view courses, enroll in course, remove course enrollment[check wait list], drop out [check waitlist, remove from all enrolled courses], view profile
             //Request tp drop 
